@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru" xml:lang="ru" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">			
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta name="description" content="Appartement Bill" />        
+        <meta name="author" content="ItBay" />	
+		<title> Учет показаний </title>			
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+		<!-- My CSS -->
+		<link href="style.css" rel="stylesheet" media="all">
+
+		<script type="text/javascript">		
+			var current_y = new Date().getFullYear();
+			var current_m = new Date().getMonth();		
+			
+			window.onload = function(){
+			    //При загрузке страницы устанавливаем текущий год и ПРЕДЫДУЩИЙ месяц и делаем запрос на данные 
+				setDate();
+				getData(current_y, current_m);
+			}
+			
+			//Функция выборки данных из бд
+			function getData(year, mon){
+				$.ajax({
+					type: 'GET',
+					url: 'data.php?type=2',
+					data: {y: year, m: mon},
+					success: function(data) {
+						$('body').html(data); //рендерим html партиал
+						setDate();
+						$('.selectpicker').selectpicker('render'); //Инициализация Bootstrap Select библиотеки
+						$(".alert").slideDown('slow').delay(1500).slideUp('slow');
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						console.log(errorThrown);
+					}
+				})			
+			}
+			
+			//Выставляем дату
+			function setDate(){
+				if (current_m == 1)
+				{
+					current_m = 12;
+					current_y = current_y - 1;
+				}	
+			}
+		</script>		
+	</head>
+<body>
+</body>
+</html>
